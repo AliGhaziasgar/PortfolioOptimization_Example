@@ -1,0 +1,9 @@
+numpy
+pandas
+matplotlib
+scipy
+plotly
+cufflinks
+seaborn
+cvxopt
+yfinance
