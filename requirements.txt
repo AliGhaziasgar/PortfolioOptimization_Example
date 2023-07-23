@@ -7,3 +7,4 @@ cufflinks
 seaborn
 cvxopt
 yfinance
+tabulate
