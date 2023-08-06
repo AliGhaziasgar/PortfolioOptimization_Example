@@ -25,23 +25,23 @@ class StockData:
         self.start_Date = start_date
         self.end_Date = end_date
         self.stock_List = stock_list
-        self.returns = self.get_Returns()
-        self.returns_Vector, self.std_Deviation_Vector, self.correlation_Matrix, self.covariance_Matrix = self.get_Matrices_From_Returns()
+        self.returns = self.calculate_Log_Returns()
+        self.mean_Returns, self.volatility_Vector, self.correlation_Matrix, self.covariance_Matrix = self.get_Matrices_From_Returns()
     
-    def get_Returns(self):
+    def calculate_Log_Returns(self):
         logging.info(f'Getting close prices for stocks: {self.stock_List} and calculating returns')
         # Get close prices
         df = yf.download(self.stock_List, start=self.start_Date, end=self.end_Date, progress=False)['Adj Close']
 
-        return df.pct_change().dropna()
+        return np.log(df) - np.log(df.shift(1))
 
     def get_Matrices_From_Returns(self):
         ''' Calculates the mean returns and standard deviation vectors and correlation and covariance matrices for a given list of stocks between a given time period
         Args:
             None
         Returns:
-            mean_returns (pd.Series) = A vector of mean returns for each stock
-            std_deviation (pd.Series) = A vector of standard deviations for each stock
+            mean returns vector (pd.Series) = A vector of mean returns for each stock
+            volatility vector (pd.Series) = A vector of standard deviations for each stock
             correlation_matrix (pd.DataFrame) = A correlation matrix of returns for each stock
             covariance_matrix (pd.DataFrame) = A covariance matrix of returns for each stock
         '''
